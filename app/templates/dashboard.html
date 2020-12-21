@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <style>
+            .continar{
+                margin: 20px;
+                display: block;
+                
+            }
+            .title{
+                margin-left: 20px;
+                justify-content: space-between;
+                display: inline-flex;
+            }
+            .title_lift{
+                display: inline-flex;
+                margin-top: 30px;
+                padding-left: 30px;
+            }.title_lift form{
+                padding-left: 30px;
+            }
+            .detaile{
+                margin-left: 60px;
+            }
+            h1 {
+            vertical-align: top;
+        }
+        .header{
+            display: inline-block;
+            vertical-align: top;
+            margin: 10px 0 0px 20px;
+
+        }
+        .new_wish{
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        }
+        table {
+            display: table;
+            border-collapse: separate;
+            border-top-color: gray;
+        }
+        </style>
+    </head>
+    <body>
+            <div class="title">
+                <div><h1>Hello, {{ user_logged_in.first_name }}!</h1></div>
+                <div class="title_lift">
+                    <a id="out" href="/logout">Logout</a>
+                    <form action="jobs/new" method="post">
+                        {% csrf_token %}
+                        <button type="submit">new job!</button>
+                    </form></div>
+            </div>
+            <hr>
+<!-- **************************************************************************** -->
+        <div class="continar">
+            
+            <div class="raw1">
+                <div id='wish_table'>
+                    <table class="table">
+                        <thead>
+                            <p>Everyone's job!</p>
+                            <tr>
+                                <th scope="col">Job</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in granted_jobss%}
+                            {% if not job.on_add%}
+                            <tr>
+                                <th scope="row">{{ job.title }}</th>
+                                <td>{{ job.location }}</td>
+                                {% if job.uploaded_by == user_logged_in %}
+                                
+                                <td><a href="jobs/{{job.id}}">View</a>|<a href="dashboard/{{job.id}}/delete">Remove</a>|<a href="jobs/edit/{{job.id}}">Edit</a>|<a href="jobs/grant/{{job.id}}">Add</a></td>
+                                {% else %}
+                                <td><a href="jobs/{{job.id}}">View</a>|<a href="jobs/grant/{{job.id}}">Add</a></td>
+                                {% endif %}
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- ************************************************************** -->
+
+            <div class="row2">
+                <div id='grant_table'>
+                    <table class="table">
+                        <thead>
+                            <p>{{ user_logged_in.first_name }} jobs!</p>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for grant in all_jobs_on_add %}
+                            {% if user_logged_in in grant.users_who_add.all %}
+                            <tr>
+                                <th scope="row">{{ grant.title }}</th>
+                                <td>{{ grant.location}}</td>
+                                    <td><a href="jobs/{{grant.id}}">View</a>|<a href="dashboard/{{grant.id}}/delete">Done</a>|<a href="jobs/ungrant/{{grant.id}}">Give up</a></td>
+                                    
+                            </tr>
+                            
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

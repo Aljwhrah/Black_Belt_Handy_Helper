@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <style>
+            .title{
+                margin-left: 20px;
+                justify-content: space-between;
+                display: inline-flex;
+            }
+            .title_lift{
+                display: inline-flex;
+                margin-top: 30px;
+                padding-left: 30px;
+            }.title_lift a{
+                margin-left: 20px;
+            }
+            .continar{
+            margin-left: 30px;
+            width: 300px;
+                height: 220px;
+                border: black;
+                border-style: inset;
+                padding-left: 20px;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="title">
+            <div><h1>Hello, {{ user_logged_in.first_name }}! These are the job details!</h1></div>
+            <div class="title_lift">
+                <a id="out" href="/logout">Logout</a>
+                <a id="out" href="/dashboard">dashboard</a>
+            </div>
+            
+        </div>
+        <hr>
+        <h1 class="title_job">{{ jobs.title  }}</h1>
+        <div class="continar">
+            <p>{{ jobs.description  }}</p>
+            <p>Location: {{ jobs.location  }}</p>
+            <p>Posted by: {{ jobs.uploaded_by.first_name  }}</p>
+            <p>Posted on:  {{ jobs.created_at  }}</p>
+            <p>Categories:  {{ jobs.category  }}</p>
+        </div>
+        {% if user_logged_in not in jobs.users_who_add.all %}
+        <a href="/jobs/grant_show/{{jobs.id}}">Add to my jobs</a>
+        {% else %}
+        <a href="/jobs/ungrant_show/{{jobs.id}}">Give up</a>
+        {% endif %}
+
+    </body>
+</html>

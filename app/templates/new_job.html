@@ -1,0 +1,64 @@
+<!-- models.BooleanField(default=False, blank=True) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .messages{
+                color: red;
+            }
+        .continar{
+            margin-left: 30px;
+            width: 300px;
+                height: 310px;
+                border: black;
+                border-style: inset;
+                padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="add">
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                {{ message }}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="title">
+                <h1>Welcome, {{ user_logged_in.first_name }} Create a job!</h1>
+            <a id="out" href="/logout">Logout</a>
+            </div>
+            <hr>
+            <div class="continar">
+                <form action="/dashboard/create" method="post">
+                    {% csrf_token %}
+                    <p>Title: <input type="text" name="title" /></p>
+                    <p>Description: <input type="text" name="description" /></p>
+                    <p>Location: <input type="text" name="location" /></p>
+                    <form method="POST">
+                        Category:<br>
+                        <input type="checkbox" id="vehicle1" name="category" value="Pet_Care">
+                        <label for="vehicle1"> Pet Care</label><br>
+                        <input type="checkbox" id="vehicle2" name="category" value="Electircal">
+                        <label for="vehicle2"> Electircal</label><br>
+                        <input type="checkbox" id="vehicle3" name="category" value="Garden">
+                        <label for="vehicle3"> Garden</label><br>
+                        <p>Other: <input type="text" name="category"></p>
+                        <input type="submit" value="Submit">
+                    </form>
+                    <!-- <button type="submit">Submit</button> -->
+                </form>
+                <form action="/dashboard" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Cancel</button>
+                </form>
+            </div>
+        
+    </div>
+</body>
+</html>

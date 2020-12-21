@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .continar{
+                margin: 20px;
+                display: inline-flex;
+            margin-left: 30px;
+            width: 300px;
+            height: 220px;
+                border: black;
+                border-style: inset;
+                padding-left: 20px;
+        
+                
+            }
+        .right{
+            margin-left: 60px;
+        }
+        .messages{
+                color: red;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h1>Welcome, {{ user_logged_in.first_name }} Let's edit your job!</h1>
+    <a id="out" href="/logout">Logout</a>
+    </div>
+    <hr>
+
+    <!-- **************************************************************************** -->
+    {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                {{ message }}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    <div class="continar">
+        <div class="add">
+            <form action="/dashboard/{{job.id}}/update" method="post">
+                {% csrf_token %}
+                <p>Title: <input type="text" name="title" value="{{job.title}}"/></p>
+                <p>Description: <input type="text" name="description" value="{{job.description}}"/></p>
+                <p>Location: <input type="text" name="location" value="{{job.location}}"/></p>
+                <button type="submit">Submit</button>
+            </form>
+            {% csrf_token %}
+            <form action="/dashboard" method="post">
+                {% csrf_token %}
+                <button type="submit">Cancel</button>
+            </form>
+            
+        </div>
+    </div>
+</body>
+</html>
